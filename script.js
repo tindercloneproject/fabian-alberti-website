@@ -6,6 +6,20 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ========================================
+    // Throttle function for scroll performance
+    // ========================================
+    const throttle = (func, limit) => {
+        let inThrottle;
+        return function() {
+            if (!inThrottle) {
+                func.apply(this, arguments);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    };
+
+    // ========================================
     // Navbar scroll effect
     // ========================================
     const navbar = document.querySelector('.navbar');
@@ -18,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', throttle(handleScroll, 50), { passive: true });
     handleScroll(); // Check initial state
 
     // ========================================
@@ -42,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // Fade in elements on scroll
     // ========================================
-    const fadeElements = document.querySelectorAll('.section-title, .about-text, .about-highlights, .experience-column, .project-card, .contact-intro, .contact-links');
+    const fadeElements = document.querySelectorAll('.section-title, .about-text, .about-image, .experience-column, .project-card, .contact-intro, .contact-links');
 
     fadeElements.forEach(el => el.classList.add('fade-in'));
 
@@ -88,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    window.addEventListener('scroll', highlightNav);
+    window.addEventListener('scroll', throttle(highlightNav, 100), { passive: true });
 
 });
 
